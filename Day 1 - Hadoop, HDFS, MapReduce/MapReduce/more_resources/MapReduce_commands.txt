@@ -1,0 +1,132 @@
+# load Hadoop module
+--------------------
+
+module load Hadoop/2.6.0-cdh5.8.0-native
+
+
+
+# find out where Hadoop is installed (variable $HADOOP_HOME)
+echo $HADOOP_HOME
+#/opt/apps/software/Hadoop/2.6.0-cdh5.8.0-native/share/hadoop/mapreduce
+
+# find the streaming library 
+find /opt/apps/software/Hadoop/2.6.0-cdh5.8.0-native -name "hadoop-streaming*jar"
+# . . .
+#/opt/apps/software/Hadoop/2.6.0-cdh5.8.0-native/share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.8.0.jar
+
+# save library in the variable $STREAMING
+export STREAMING=/opt/apps/software/Hadoop/2.6.0-cdh5.8.0-native/share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.8.0.jar
+
+
+# start a simple MapReduce job
+#-----------------------------
+
+# Simple job
+############
+
+# check that the output directory does not exist
+hdfs dfs -rm -r output
+
+# copy the file to HDFS
+hdfs dfs -put wiki_1K_lines
+
+# launch MapReduce job
+# hadoop jar $STREAMING \
+        -input wiki_1k_lines \
+        -output output \
+        -mapper /bin/cat \
+        -reducer '/bin/wc -l'
+
+# check if job was successful (output should contain a file named _SUCCESS)
+hdfs dfs -ls output
+# check result
+hdfs dfs -cat output/part-00000
+
+# Simple job with 4 mappers
+###########################
+
+hdfs dfs -rm -r output
+
+# launch MapReduce job 
+hadoop jar $STREAMING \
+        -D mapreduce.job.maps=4 \
+        -input  wiki_1k_lines  \
+        -output  output   \
+        -mapper /bin/cat   \
+        -reducer  '/bin/wc -l'
+
+# Wordcount with MapReduce
+##########################
+
+# use mapper.py and reducer.py
+# mini-test of mapper and reducer
+echo "carrot carrot apple carrot" | ./mapper.py | sort -k1 | ./reducer.py
+
+# run wordcount job
+# upload file to HDFS
+hdfs dfs -put data/wiki_1k_lines
+# remove output directory
+hdfs dfs -rm -r output
+
+hadoop jar $STREAMING \
+      -files mapper.py \
+      -files reducer.py \
+      -mapper mapper.py \
+      -reducer reducer.py \
+      -input wiki_1k_lines \
+      -output output
+
+# check if output contains _SUCCESS
+hdfs dfs -ls output
+# check result
+hdfs dfs -cat output/part-00000|head
+
+# sort output by frequency
+hdfs dfs -cat output/part-00000|sort -k2nr|head
+
+# use swap_keyval.py
+
+# might not be necessary
+hdfs dfs -rm -r output2
+
+hadoop jar $STREAMING \
+      -files swap_keyval.py \
+      -input output \
+      -output output2 \
+      -mapper swap_keyval.py 
+
+# check if output contains _SUCCESS
+hdfs dfs -ls output
+# check result
+
+hdfs dfs -cat output2/part-00000|head
+# 10021	his
+# 1005	per
+# 101	merely
+# . . .
+
+
+hdfs dfs -rm -r output2
+
+comparator_class=org.apache.hadoop.mapred.lib.KeyFieldBasedComparator
+
+hadoop jar $STREAMING \
+      -D mapreduce.job.output.key.comparator.class=$comparator_class \
+     -D mapreduce.partition.keycomparator.options=-nr \
+      -files swap_keyval.py \
+      -input output \
+      -output output2 \
+      -mapper swap_keyval.py 
+
+hdfs dfs -cat output2/part-00000|head
+# 193778	the
+# 117170	of
+# 89966	and
+# 69186	in
+
+
+# Run MapReduce examples
+########################
+
+# list all examples
+hadoop jar $HADOOP_HOME/hadoop-mapreduce-examples-2.6.0-cdh5.8.0.jar

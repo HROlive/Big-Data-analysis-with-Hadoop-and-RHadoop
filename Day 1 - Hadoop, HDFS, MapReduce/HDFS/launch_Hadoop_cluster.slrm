@@ -1,0 +1,44 @@
+#!/bin/bash
+#SBATCH --job-name=launch_Hadoop_cluster  # name of the job
+#SBATCH --nodes=1                         # number of nodes reserved
+#SBATCH --time=00:04:00                   # time needed for job
+#SBATCH --partition=skylake_0096  
+#SBATCH --qos=skylake_0096
+#SBATCH --reservation=training            # available only during the course
+
+
+###################################################
+# Use SBATCH --reservation=training during training
+
+
+##########################################
+# clear all modules & load Java and Hadoop
+module purge
+module load openjdk
+module load hadoop
+
+################################
+# set some environment variables
+export PDSH_RCMD_TYPE=ssh
+
+#######################
+# launch Hadoop cluster
+prolog_create_key.sh
+source vsc_start_hadoop.sh
+
+
+#########################################################
+# EDIT BEGIN
+# here the cluster is running and we can run our commands
+# echo 'Hello, World!'
+echo 'Hello, World!'
+# EDIT END
+#########################################################
+
+
+#####################
+# stop Hadoop cluster
+source vsc_stop_hadoop.sh
+epilog_discard_key.sh
+
+# check output/errors in slurm-<jobID>

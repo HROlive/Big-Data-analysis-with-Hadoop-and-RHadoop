@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH -J mapreduce_job
+#SBATCH -N 1
+#SBATCH --partition=skylake_0096
+#SBATCH --qos=skylake_0096
+#SBATCH --reservation=training # available only during course
+#SBATCH --time=00:03:00
+
+
+module load hadoop 
+rm -rf temp
+rm -rf output
+
+mapred streaming \
+	-files mapper.py,reducer.py \
+	-mapper mapper.py \
+	-reducer reducer.py \
+	-input /home/fs70824/training/hadoop_training_data/consumer_data.csv \
+	-output temp
+
+
+mapred streaming \
+	-files second_mapper.py,second_reducer.py \
+	-mapper second_mapper.py \
+	-reducer second_reducer.py \
+	-input temp \
+	-output output

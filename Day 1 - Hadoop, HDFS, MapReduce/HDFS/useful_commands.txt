@@ -1,0 +1,40 @@
+# module commands
+# ---------------
+# show available Hadoop installations
+module avail Hadoop 
+# load the default Hadoop installation
+module load Hadoop 
+# show loaded modules
+module list  
+# unload all modules
+module purge 
+# show currently loaded Hadoop version
+module show Hadoop 
+
+# show environment variables
+#---------------------------
+echo $JAVA_HOME
+echo $PATH
+echo $HADOOP_HOME
+
+# show cluster configuration
+#---------------------------
+# show namenode(s)
+hdfs getconf -namenodes 
+# show datanodes
+yarn node -list -all	
+# show more details for each datanode
+yarn node -list
+# show blocksize
+hdfs getconf -confKey dfs.blocksize|numfmt --to=iec	
+# show replication factor
+hdfs getconf -confKey dfs.replication	
+
+# Hadoop filesystem shell commands
+#---------------------------------
+hadoop fs -usage
+hdfs dfs -usage
+
+# show available disk-space on Hadoop filesystem (HDFS cluster storage)
+hdfs dfs -df -h
+hdfs dfs -du -h /

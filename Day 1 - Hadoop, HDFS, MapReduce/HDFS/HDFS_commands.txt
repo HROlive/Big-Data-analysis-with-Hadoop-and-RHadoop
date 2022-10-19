@@ -1,0 +1,42 @@
+# substitute name of the file here:
+MY_FILE=wiki_1k_lines
+
+# create a new directory called "input" on HDFS
+hdfs dfs -mkdir input
+
+# copy local file $MY_FILE to input folder on HDFS
+hdfs dfs -put $MY_FILE input/
+
+# list contents of directory ("-h" = human)
+hdfs dfs -ls -h input
+
+# disk usage
+hdfs dfs -du -h input
+
+# get help on "du" command
+hdfs dfs -help du 
+
+# usage
+hdfs dfs -usage
+
+# get help on the HDFS "tail" command
+hdfs dfs -help tail
+
+# show the size of $MY_FILE on the regular filesystem
+ls -h $MY_FILE
+
+# show the size of $MY_FILE on HDFS
+hdfs dfs -put $MY_FILE
+hdfs dfs -ls -h $MY_FILE
+
+# disk usage of wiki_1k_lines on the regular filesystem
+du -h wiki_1k_lines
+
+# disk usage of wiki_1k_lines on HDFS
+hdfs dfs -du -h wiki_1k_lines
+
+# check blocksize and replication
+hdfs dfs -stat 'Block size: %o No. of blocks: %b Replication:%r' input/wiki_1k_lines
+
+# remove directory
+hdfs dfs -rm -r input

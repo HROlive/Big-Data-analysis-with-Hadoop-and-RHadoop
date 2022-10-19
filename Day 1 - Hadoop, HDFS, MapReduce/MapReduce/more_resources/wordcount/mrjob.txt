@@ -1,0 +1,6 @@
+# install mrjob
+python3 -m venv mypython
+mypython/bin/pip install ipython mrjob
+
+# run a mrjob wordcount
+mypython/bin/python3 word_count.py data/wiki_1k_lines

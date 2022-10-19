@@ -1,0 +1,69 @@
+#!/bin/bash
+#SBATCH --job-name=hdfs_commands      # name of the job
+#SBATCH --nodes=2                     # number of nodes reserved
+#SBATCH --time=00:04:00               # time needed for job
+#SBATCH --partition=skylake_0096  
+#SBATCH --qos=skylake_0096
+#SBATCH --reservation=training        # available only during the course
+
+
+###################################################
+# Use SBATCH --reservation=training during training
+
+##########################################
+# clear all modules & load Java and Hadoop
+module purge
+module load openjdk
+module load hadoop
+
+################################
+# set some environment variables
+export PDSH_RCMD_TYPE=ssh
+
+#######################
+# launch Hadoop cluster
+prolog_create_key.sh
+source vsc_start_hadoop.sh
+
+
+#########################################################
+# EDIT BEGIN
+# here the cluster is running and we can run our commands
+
+DATADIR='/home/fs70824/training/hadoop_training_data'   # this is where data is located 
+
+echo "Creating a new directory myDir"
+hdfs dfs -mkdir myDir
+
+echo "List new HDFS directory myDir"
+hdfs dfs -ls -h myDir 
+
+echo "Upload file to new directory myDir"
+hdfs dfs -put ${DATADIR}/wiki_sample_2400lines myDir
+
+echo "List new directory myDir"
+hdfs dfs -ls -h myDir
+
+echo "Show disk usage of directory myDir"
+hdfs dfs -du -h myDir 
+
+# change replication factor to 2
+hdfs dfs -setrep -w 2 myDir
+
+echo "Show disk usage of directory myDir after changing replication factor"
+hdfs dfs -du -h myDir 
+
+echo "Remove directory myDir (this will remove also all files contained in it"
+hdfs dfs -rm -r myDir
+
+# EDIT END
+#########################################################
+
+
+
+#####################
+# stop Hadoop cluster
+source vsc_stop_hadoop.sh
+epilog_discard_key.sh
+
+# check output/errors in slurm-<jobID>
