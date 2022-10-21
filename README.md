@@ -1,5 +1,3 @@
-# Big Data analysis with Hadoop and RHadoop
-
 <p align="center">
   <img src="images/banner.png">
 </p>
