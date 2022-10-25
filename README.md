@@ -41,4 +41,4 @@ The notebooks and exercises can be found in this repository and are organized in
 
 The certificate for the workshop can be found bellow:
 
-["Big Data analysis with Hadoop and RHadoop" - EuroCC Slovenia, EuroCC Slovakia, EuroCC Austria and VSC Research Center]() (Issued On: October 2022)
+["Big Data analysis with Hadoop and RHadoop" - EuroCC Slovenia, EuroCC Slovakia, EuroCC Austria and VSC Research Center](https://github.com/HROlive/Big-Data-analysis-with-Hadoop-and-RHadoop/blob/main/images/certificate.pdf) (Issued On: October 2022)
