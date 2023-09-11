@@ -11,9 +11,9 @@
 <a name="descripton"></a>
 ## Description
 
-This training course focused on the foundations of “Big Data” processing by introducing the Hadoop distributed computing architecture and providing an introductory level tutorial for Big Data analysis using Hadoop, Rhadoop, and R libraries parallel, doParallel, foreach and Rmpi. The course had an hands-on approach, allowing participants to work interactively on real data on the High Performance Computing environment of the University of Ljubljana and on the Vienna Scientific Cluster.
+This training course focused on the foundations of “Big Data” processing by introducing the Hadoop distributed computing architecture and providing an introductory level tutorial for Big Data analysis using Hadoop, Rhadoop, and R libraries parallel, doParallel, foreach and Rmpi. The course had a hands-on approach, allowing participants to work interactively on real data on the High Performance Computing environment of the University of Ljubljana and on the Vienna Scientific Cluster.
 
-This two day course was an EuroCC event, jointly organised by EuroCC Slovenia, EuroCC Slovakia and EuroCC Austria.
+This two-day course was an EuroCC event, jointly organized by EuroCC Slovenia, EuroCC Slovakia and EuroCC Austria.
 
 <a name="information"></a>
 ## Information
@@ -39,6 +39,6 @@ The notebooks and exercises can be found in this repository and are organized in
 <a name="certificate"></a>
 ## Certificate
 
-The certificate for the workshop can be found bellow:
+The certificate for the workshop can be found below:
 
 ["Big Data analysis with Hadoop and RHadoop" - EuroCC Slovenia, EuroCC Slovakia, EuroCC Austria and VSC Research Center](https://github.com/HROlive/Big-Data-analysis-with-Hadoop-and-RHadoop/blob/main/images/certificate.pdf) (Issued On: October 2022)
